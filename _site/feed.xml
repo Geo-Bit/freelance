@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-06-28T14:02:26-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">geo</title><subtitle>Hello! My name is George Tipton. I am professional security engineer focused primary on Application and Cloud Security. My hobbies include homelab, security research, wood working, and software development. This is where I organize my projects and thoughts.
+</subtitle><author><name>Geo</name></author><entry><title type="html">Automated Monitoring and Alerting for Proxmox</title><link href="http://localhost:4000/2023/09/29/proxmox-monitoring.html" rel="alternate" type="text/html" title="Automated Monitoring and Alerting for Proxmox" /><published>2023-09-29T00:00:00-06:00</published><updated>2023-09-29T00:00:00-06:00</updated><id>http://localhost:4000/2023/09/29/proxmox-monitoring</id><content type="html" xml:base="http://localhost:4000/2023/09/29/proxmox-monitoring.html"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>Proxmox Virtual Environment (Proxmox VE) is a powerful open-source virtualization platform that combines two virtualization technologies: KVM (Kernel-based Virtual Machine) for virtual machines and LXC (Linux Containers) for lightweight container-based virtualization. Monitoring your Proxmox environment is crucial for ensuring its reliability and performance. In this guide, we’ll explore how to set up automated Proxmox monitoring and alerting to keep your virtual infrastructure in check.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<p>Before we begin, make sure you have the following prerequisites:</p>
+
+<ol>
+  <li>A Proxmox Virtual Environment (Proxmox VE) installation.</li>
+  <li>Access to the Proxmox web interface.</li>
+  <li>A server or virtual machine running an operating system that supports Docker.</li>
+</ol>
+
+<h1 id="step-1-install-docker-and-docker-compose">Step 1: Install Docker and Docker Compose</h1>
+
+<p>Proxmox monitoring and alerting can be simplified by using Docker containers. Start by installing Docker and Docker Compose on a server or VM that can communicate with your Proxmox host. You can follow the official Docker installation instructions for your chosen operating system.</p>
+
+<h1 id="step-2-create-a-docker-compose-configuration">Step 2: Create a Docker Compose Configuration</h1>
+
+<p>Create a directory for your Proxmox monitoring configuration files. Inside this directory, create a <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file with the following content:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">prometheus</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">prom/prometheus</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">prometheus</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">9090:9090</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/path/to/prometheus-config:/etc/prometheus</span>
+    <span class="na">command</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">--config.file=/etc/prometheus/prometheus.yml"</span>
+
+  <span class="na">alertmanager</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">prom/alertmanager</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">alertmanager</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">9093:9093</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/path/to/alertmanager-config:/etc/alertmanager</span>
+    <span class="na">command</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">--config.file=/etc/alertmanager/config.yml"</span>
+</code></pre></div></div>
+
+<p>Replace /path/to/prometheus-config and /path/to/alertmanager-config with the paths to your configuration directories.</p>
+
+<h1 id="step-3-configure-prometheus">Step 3: Configure Prometheus</h1>
+
+<p>Create a prometheus.yml file inside your /path/to/prometheus-config directory with the following content:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">global</span><span class="pi">:</span>
+  <span class="na">scrape_interval</span><span class="pi">:</span> <span class="s">15s</span>
+
+<span class="na">scrape_configs</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">job_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">proxmox"</span>
+    <span class="na">static_configs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">targets</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">proxmox-host-ip:9100"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<p>Replace ‘proxmox-host-ip’ with the IP address or hostname of your Proxmox host.</p>
+
+<h1 id="step-4-configure-alertmanager">Step 4: Configure AlertManager</h1>
+
+<p>Create a config.yml file inside your /path/to/alertmanager-config directory. Here’s a sample configuration for AlertManager:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">route</span><span class="pi">:</span>
+  <span class="na">group_by</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">alertname"</span><span class="pi">]</span>
+  <span class="na">group_wait</span><span class="pi">:</span> <span class="s">30s</span>
+  <span class="na">group_interval</span><span class="pi">:</span> <span class="s">5m</span>
+  <span class="na">repeat_interval</span><span class="pi">:</span> <span class="s">1h</span>
+  <span class="na">receiver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">default"</span>
+
+<span class="na">receivers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">default"</span>
+    <span class="na">email_configs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">to</span><span class="pi">:</span> <span class="s2">"</span><span class="s">your-email@example.com"</span>
+</code></pre></div></div>
+
+<p>Configure the email recipient address in the to field.</p>
+
+<h1 id="step-5-start-docker-containers">Step 5: Start Docker Containers</h1>
+
+<p>Navigate to the directory containing your docker-compose.yml file and run the following command to start Prometheus and AlertManager in Docker containers:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h1 id="step-6-configure-proxmox-alerts">Step 6: Configure Proxmox Alerts</h1>
+
+<p>In the Proxmox web interface, navigate to “Datacenter” &gt; “Nodes” &gt; “Your Node” &gt; “System” &gt; “Email.” Set up email notifications, and configure alerts to send emails to your AlertManager.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Automated Proxmox monitoring and alerting using Docker containers, Prometheus, and AlertManager ensures that your Proxmox virtual environment stays healthy and responsive. You can receive timely alerts about system health and take proactive measures to maintain a reliable virtual infrastructure. Monitoring and alerting are essential components of managing your Proxmox VE effectively, ensuring your virtual machines and containers run smoothly.</p>]]></content><author><name>Geo</name></author><category term="Proxmox" /><category term="Monitoring" /><category term="Alerting" /><summary type="html"><![CDATA[Introduction]]></summary></entry><entry><title type="html">GitHub Pages - Blogging with Jekyll via Subdirectory</title><link href="http://localhost:4000/2023/08/01/jekyll-github-pages-subdirectory.html" rel="alternate" type="text/html" title="GitHub Pages - Blogging with Jekyll via Subdirectory" /><published>2023-08-01T00:00:00-06:00</published><updated>2023-08-01T00:00:00-06:00</updated><id>http://localhost:4000/2023/08/01/jekyll-github-pages-subdirectory</id><content type="html" xml:base="http://localhost:4000/2023/08/01/jekyll-github-pages-subdirectory.html"><![CDATA[<p>Jekyll (and Jekyll themes) is a great way to get started with Blogging. I have already been hosting a static homepage for myself using GitHub pages (at georgetipton.com), and wanted to create a blog without it being hosted on the root of my site (accessible via https://georgetipton.com/blog, for example). I had a surprisingly difficult time figuring out a way to easily accomplish this, so I figured I would create a quick how-to as my first blog entry!</p>
+
+<p>Note: this how-to assumes you already have a GitHub pages site (such as username.github.io), and want to add a separate, external blog site page.</p>
+
+<p>I’ll be using Beautiful Jekyll as my Jekyll theme for the sake of this tutorial.</p>
+
+<ol>
+  <li>Create a Fork of <a href="https://github.com/daattali/beautiful-jekyll">Beautiful-Jekyll</a> repository on GitHub, and name it whatever you’d like.
+<img src="../assets/img/gh-jekyll-fork.png" alt="Fork GitHub repo" />
+<img src="../assets/img/gh-jekyll-fork-config.png" alt="Fork GitHub repo" /></li>
+  <li>Once forked, navigate to the “Settings” page for your repository
+<img src="../assets/img/gh-jekyll-settings.png" alt="Fork GitHub repo" /></li>
+  <li>Under “Code and Automation”, click “Pages”
+<img src="../assets/img/gh-jekyll-pages.png" alt="Fork GitHub repo" /></li>
+  <li>Configure the following settings
+    <ul>
+      <li>Source: Deploy from a branch</li>
+      <li>Branch: master</li>
+      <li>Folder: /(root)</li>
+    </ul>
+  </li>
+  <li>Click save</li>
+  <li>Once saved, you should see that your repo is live at the specified URL
+<img src="../assets/img/gh-jekyll-pages-config.png" alt="Fork GitHub repo" />
+<img src="../assets/img/gh-jekyll-live.png" alt="Fork GitHub repo" /></li>
+</ol>
+
+<p>With the generated URL, you can then simply add a link from your primary GitHub pages homepage (as seen on my site, https://georgetipton.com)</p>
+
+<p>Resources:</p>
+
+<ul>
+  <li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site">Publishing Source for Your GitHub Pages Site</a></li>
+</ul>]]></content><author><name>Geo</name></author><category term="howto" /><category term="jekyll" /><category term="blog" /><category term="github pages" /><summary type="html"><![CDATA[Jekyll (and Jekyll themes) is a great way to get started with Blogging. I have already been hosting a static homepage for myself using GitHub pages (at georgetipton.com), and wanted to create a blog without it being hosted on the root of my site (accessible via https://georgetipton.com/blog, for example). I had a surprisingly difficult time figuring out a way to easily accomplish this, so I figured I would create a quick how-to as my first blog entry!]]></summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/2019/04/16/welcome-to-jekyll2.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2019-04-16T00:00:00-06:00</published><updated>2019-04-16T00:00:00-06:00</updated><id>http://localhost:4000/2019/04/16/welcome-to-jekyll2</id><content type="html" xml:base="http://localhost:4000/2019/04/16/welcome-to-jekyll2.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+
+<p>To add new posts, simply add a file in the <code class="language-plaintext highlighter-rouge">_posts</code> directory that follows the convention <code class="language-plaintext highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+
+<blockquote>
+  <p>“This is a quote which should be followed”
+Also I think this sentence is quite long.
+more quote text to come</p>
+  <ul>
+    <li>Chris Wayne</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>Single line quote</p>
+</blockquote>
+
+<p>However, these are bulletpoints:</p>
+
+<ul>
+  <li>To add new posts, simply add a file in the <code class="language-plaintext highlighter-rouge">_posts</code> directory that follows the convention <code class="language-plaintext highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</li>
+  <li>another point</li>
+  <li>that’s it</li>
+</ul>
+
+<p>However, these entries should not be styled:</p>
+
+<ol>
+  <li>an entry</li>
+  <li>another entry</li>
+  <li>that’s another entry</li>
+</ol>
+
+<video preload="auto" poster="https://pbs.twimg.com/tweet_video_thumb/D5aj3tfW0AIiSxo.jpg" src="https://video.twimg.com/tweet_video/D5aj3tfW0AIiSxo.mp4" type="video/mp4" autoplay="" controls=""></video>
+
+<p>Jekyll also offers powerful support for code snippets:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span>
+</code></pre></div></div>
+
+<h1 id="an-interesting-fact-on-the-economy-of-modern-america">An interesting fact on the economy of modern America</h1>
+
+<p>Pictures look like this:</p>
+
+<p><img src="https://picsum.photos/200" alt="image" class="modal" /></p>
+
+<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/jekyll?src=hash&amp;ref_src=twsrc%5Etfw">#jekyll</a> <a href="https://twitter.com/hashtag/dash?src=hash&amp;ref_src=twsrc%5Etfw">#dash</a> now officially supports both, dark and light theming. Enjoy!<a href="https://t.co/4evp9pX2Ws">https://t.co/4evp9pX2Ws</a> <a href="https://t.co/vOQCZjGKic">pic.twitter.com/vOQCZjGKic</a></p>&mdash; 〽️ɪɢᴜᴇʟ (@bitbrain_) <a href="https://twitter.com/bitbrain_/status/1166440978124877827?ref_src=twsrc%5Etfw">August 27, 2019</a></blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>]]></content><author><name>Geo</name></author><category term="welcome" /><category term="introduction" /><summary type="html"><![CDATA[this article explains something and gives a brief introduction.]]></summary></entry></feed>
