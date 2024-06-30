@@ -1,66 +1,38 @@
-title: geo
-author: Geo
-email: george.w.tipton@gmail.com
-description: > # this means to ignore newlines until "show_exerpts:"
-  Hello! My name is George Tipton. I am a professional Security Engineer focused
-  primary on Application and Cloud Security. My hobbies include homelab, security research,
-  wood working, and software development. This is where I organize my projects and thoughts.
-show_excerpts: false # set to true to show excerpts on the homepage
-paginate: 8
-paginate_path: "/blog/page:num/"
+name: George Tipton's Blog
 
-tag_permalink_style: pretty
-tag_page_layout: tag_page
-tag_page_dir: tag
+description: "The personal site of George Tipton, designer and front-end technologist. Where I write about code, design, food, and life. Views expressed are my own. Use code at your own risk."
 
-# jekyll-dash date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
-dash:
-  # the way how dates should be displayed
-  date_format: "%b %-d, %Y"
-
-  # (optional) discqus comment configuration
-  disqus:
-    shortname: bitbrain-github-io
-
-  # generate social links in footer
-  # supported colors: green, red, orange, blue, cyan, pink, teal, yellow, indigo, purple
-  social_links:
-    - url: https://georgetipton.com
-      icon: user
-      color: cyan
-    - url: https://www.linkedin.com/in/george-tipton/
-      icon: linkedin
-      color: cyan
-    - url: https://github.com/Geo-Bit
-      icon: github
-      color: cyan
-
-  # wether the author box should be displayed
-  show_author: true
-
-  # the animation speed of the scroll-in effect
-  animation_speed: 50
-
-  # wether to enable Right-to-Left support or not
-  rtl: false
-
-  # Replaces the default avatar provider (gravatar)
-  #avatar_source: github
-  #github_username: bitbrain
-  avatar_source: local
-  avatar_path: /blog/assets/avatar.png
-
-# Other
-url: "https://georgetipton.com"
-#baseurl: "blog/"
-
-# Build settings
-remote-theme: bitbrain/jekyll-dash
+url: https://georgetipton.com
 
 plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-paginate
-  - liquid-md5
-  - jekyll/tagging
+  - jekyll-redirect-from
+
+sass:
+  sass_dir: _sass
+  style: compressed
+
+lsi: false
+
+exclude:
+  [
+    "script",
+    "vendor",
+    "Gemfile",
+    "Gemfile.lock",
+    "config.ru",
+    "Procfile",
+    "Rakefile",
+    "readme.md",
+    "scss",
+  ]
+
+permalink: /writing/:title
+
+markdown_ext: markdown,mkd,mkdn,md
+
+collections:
+  case-studies:
+    output: true
+    permalink: /:collection/:path/
+    defaults:
+      layouts: casestudy

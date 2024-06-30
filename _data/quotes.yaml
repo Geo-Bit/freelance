@@ -1,0 +1,16 @@
+---
+- name: George Tipton
+  linkedinprofile: https://www.linkedin.com/
+  image: /img/quotes/mayakoneval.jpg
+  url: https://www.linkedin.com/in/georgetipton/details/recommendations/
+  quote: |
+    Many times, George was able to take a functional existing view and upgrade it to a level I could not have envisioned. All of his work is extremely considered and well presented. In a growing company, Joel was able to establish patterns and principles for our design systems that we still rely on.”
+  title: Software Engineer • Apollo GraphQL
+
+- name: Yabba Yabba
+  linkedinprofile: https://www.linkedin.com/in/
+  image: /img/quotes/cheapsteak.jpg
+  url: https://www.linkedin.com/in/georgetipton/details/recommendations/
+  quote: |
+    George is an incredibly talented designer. He's wowed us time and again with his ability to take a complex set of requirements and constraints and distill them into elegant designs. He's also technically proficient, able to comfortably jump into code to update React components and CSS where needed. As much as our toolings have improved, still nothing beats a trained eye and a skilled hand nudging the final elements into the right place.”
+  title: Engineering Manager • Apollo GraphQL

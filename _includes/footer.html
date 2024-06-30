@@ -1,9 +1,12 @@
-<footer class="site-footer">
-  <div class="wrapper">
-    <div class="credits"><a href="https://github.com/bitbrain/jekyll-dash">dash</a> theme for Jekyll by <a href="https://github.com/bitbrain">bitbrain</a> made with <i class="fas fa-heart"></i>
-      {%- include theme-toggle.html -%}
+<footer class="page-footer overflow-hidden py4 mx2">
+  <section class="max-width-4 mx-auto clearfix center">
+    {% include social-icons.html %}
+    <div class="text-small mt3">
+      <p class="mt0 mb2">
+        Content ©{{ site.time | date: "%Y" }} George Tipton. All rights reserved. <br>
+      </p>
+
     </div>
-  </div>
+
+  </section>
 </footer>
-
-

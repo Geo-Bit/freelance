@@ -1,0 +1,20 @@
+---
+- name: Lows in the 70s
+  url: https://www.lowsinthe70s.com/
+  role: Digital Marketing, Web Design & Development, Advertising
+  timeframe: 2024 – Present
+  summary: |
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum tempus pellentesque. Vivamus mollis ullamcorper ante, sagittis facilisis dolor malesuada vitae
+  has_case_studies: false
+  image: /img/lowsinthe70s.png
+  image_alt: Lows in the 70s business banner.
+
+- name: Yates Skid Steer & Land Services LLC
+  url: https://www.yatesskidsteer.com/
+  role: Digital Marketing, Web Design & Development, Advertising
+  timeframe: 2023 – Present
+  summary: |
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In interdum tempus pellentesque. Vivamus mollis ullamcorper ante, sagittis facilisis dolor malesuada vitae
+  has_case_studies: false
+  image: /img/yatesskidsteer.jpeg
+  image_alt:

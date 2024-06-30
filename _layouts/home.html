@@ -1,44 +1,19 @@
----
-layout: default
----
-{% unless site.dash.show_author == false %}
-  {% include author.html %}
-{% endunless %}
-{{ content }}
-{% assign posts_count = paginator.posts | size %}
-{% if posts_count > 0 %}
-<h1>blog</h1>
-    <div class="post-links">
-      {% for post in paginator.posts %}
-        <div class="post-link-wrapper">
-          <a href="{{ post.url | relative_url }}" class="post-link">{{ post.title }}</a>
-          <div class="post-meta">
+<!DOCTYPE html>
+<html lang="en-us" class="no-js">
 
-            {% if site.plugins contains "jekyll/tagging" %}
-            <div class="post-tags">
-                {% for tag in post.tags %}
-                <a class="tag" href="{{ tag | tag_url }}">{{ tag }}</a>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% if site.dash.date_format %}
-              {{ post.date | date: site.dash.date_format }}
-            {% else %}
-              {{ post.date | date: "%b %-d, %Y" }}
-            {% endif %}
-            {% if site.show_excerpts == true %}
-              <div class="post-excerpt">
-                {{ post.content | strip_html | truncatewords: 50 }}
-              </div>
-            {% endif %}
-          </div>
-        </div>
-      {% endfor %}
-    </div>
+{% include head.html %}
 
-    {% include pagination.html %}
+<body class="page-home">
 
-    <!--{% include tagcloud.html %}-->
-{% else %}
-<h2>no posts yet.</h2>
-{% endif %}
+<div class="main-content relative mx3">
+  {% include home/intro.html %}
+  {% include home/work.html %}
+  <!--{% include home/quotes.html %} -->
+  <!--{% include home/projects.html %}-->
+  <!-- include home/elsewhere.html -->
+  <!-- include home/featured-writing.html -->
+</div>
+
+{% include footer.html %}
+
+{% include closing-tags.html %}
