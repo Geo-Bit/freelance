@@ -2,7 +2,7 @@ name: George Tipton's Blog
 
 description: "The personal site of George Tipton, designer and front-end technologist. Where I write about code, design, food, and life. Views expressed are my own. Use code at your own risk."
 
-url: https://georgetipton.com
+url: https://georgetipton.com/tiptontech/
 
 plugins:
   - jekyll-redirect-from
