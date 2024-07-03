@@ -30,7 +30,7 @@ We partnered with TIME.com's in house design team, led by [Davina Anthony](https
       <span class="address-bar left"></span>
     </div>
     <div class="cs-figure-device-screen">
-      <img src="/img/case-studies/time/time-device-browser.png" alt="" class="cs-figure-device-image block img-full-width" />
+      <img src="{{ site.baseurl }}/img/case-studies/time/time-device-browser.png" alt="" class="cs-figure-device-image block img-full-width" />
     </div>
   </div>
 

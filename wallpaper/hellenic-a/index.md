@@ -1,4 +1,4 @@
 ---
 layout: redirect
-external_url: "http://2011.joelglovier.com/wallpaper/hellenic-a/"
+external_url: "http://2011.georgetipton.com/wallpaper/hellenic-a/"
 ---

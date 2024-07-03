@@ -1,4 +1,4 @@
 ---
 layout: redirect
-external_url: "http://2011.joelglovier.com/wallpaper/relationships/"
+external_url: "http://2011.georgetipton.com/wallpaper/relationships/"
 ---
