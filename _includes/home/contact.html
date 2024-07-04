@@ -1,0 +1,72 @@
+<section class="max-width-4 mx-auto clearfix pb4 mb4" id="work">
+
+  <div class="col col-12 pb4 m-pb0">
+    <h2 class="section-heading mt0 mb3 m-mb0">
+      Reach Out
+    </h2>
+
+
+<!-- version with illustration instead
+  <img src="/img/section-heading-work.png" alt="Where I've worked" class="section-heading-image flying-ball" width="340">
+-->
+<div class="contact-form border rounded p3 mx-auto mb4 bg-light-gray">
+  <form action="https://formspree.io/f/your-form-id" method="POST">
+    <div class="form-group mb3">
+      <label for="name" class="bold mb1 block">Name</label>
+      <input type="text" id="name" name="name" required class="border rounded p2 col-12">
+    </div>
+    <div class="form-group mb3">
+      <label for="email" class="bold mb1 block">Email</label>
+      <input type="email" id="email" name="email" required class="border rounded p2 col-12">
+    </div>
+    <div class="form-group mb3">
+      <label for="message" class="bold mb1 block">How can I help?</label>
+      <textarea id="message" name="message" required class="border rounded p2 col-12" rows="5"></textarea>
+    </div>
+    <button type="submit" class="submit-btn bg-blue white p2 rounded">Send</button>
+  </form>
+</div>
+</div>
+<style>
+  .contact-form {
+    background-color: #f9f9f9;
+    border-color: #e1e1e1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+  }
+  .contact-form h2 {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    font-size: 1rem;
+  }
+  .form-group input,
+  .form-group textarea {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  .submit-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  .bg-light-gray {
+    background-color: #f9f9f9;
+  }
+</style>
+
+</section>
